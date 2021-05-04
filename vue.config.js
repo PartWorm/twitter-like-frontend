@@ -5,6 +5,9 @@ module.exports = {
 				'/api': {
 					target: 'http://partworm.dothome.co.kr',
 				},
+				'/static': {
+					target: 'http://partworm.dothome.co.kr',
+				},
 			},
 		},
 	},

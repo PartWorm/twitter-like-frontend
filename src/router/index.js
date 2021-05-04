@@ -1,12 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import TagHome from '@/components/TagHome.vue';
+import PostPage from '@/routes/PostPage.vue';
+import TagHome from '@/routes/TagHome.vue';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 const routes = [
 	{ path: '/', component: TagHome },
+	{ path: '/tag/:tag', component: TagHome, props: true },
+	{ path: '/post/:id', component: PostPage, props: true },
 ];
 
-const router = createRouter({
-	history: createWebHistory(),
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+	mode: 'history',
 	routes,
 });
 
