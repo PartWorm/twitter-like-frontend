@@ -48,9 +48,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.$nextTick(() => {
-			this.height = this.$refs.post.$el.firstChild.clientHeight;
-		});
+		this.height = this.$refs.post.height();
 	},
 };
 
