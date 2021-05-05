@@ -2,45 +2,25 @@
 	<div style="position: relative;">
 		<post
 			ref="post"
-			:id="id"
-			:author="author"
-			:timestamp="timestamp"
-			:content="content"
-			:n_children="n_children"
-			:n_descendants="n_descendants"
-			:depth="depth"
-			:stick_top="stick_top"
-			:main="main"
+			v-bind="$props"
 		></post>
-		<div v-if="children" style="display: flex; flex-direction: row;">
+		<div v-if="data.children" style="display: flex; flex-direction: row;">
 			<div class="indent-line"></div>
 			<div style="flex-grow: 1;">
 				<post-tree
-					v-for="child in children" :key="child.id"
-					:id="child.id"
-					:author="child.author"
-					:timestamp="child.timestamp"
-					:content="child.content"
-					:children="child.children"
-					:thread="child.thread"
-					:n_children="child.n_children"
-					:n_descendants="child.n_descendants"
+					v-for="child in data.children" :key="child.id"
+					:data="child"
 					:depth="depth + 1"
 					:stick_top="stick_top + height"
 				></post-tree>
 			</div>
 		</div>
-		<div v-else-if="thread" style="display: flex; flex-direction: row;">
+		<div v-else-if="data.thread" style="display: flex; flex-direction: row;">
 			<div class="indent-line thread-line"></div>
 			<div style="flex-grow: 1;">
 				<post
-					v-for="child in thread" :key="child.id"
-					:id="child.id"
-					:author="child.author"
-					:timestamp="child.timestamp"
-					:content="child.content"
-					:n_children="child.n_children"
-					:n_descendants="child.n_descendants"
+					v-for="child in data.thread" :key="child.id"
+					:data="child"
 					:depth="depth + 1"
 					:stick_top="stick_top + height"
 					:sticky="false"
@@ -69,20 +49,14 @@
 
 <script lang="ts">
 
+import Vue from 'vue';
 import Post from './Post.vue';
 
-export default {
+export default Vue.extend({
 	name: 'post-tree',
 	components: { Post },
 	props: {
-		id: {},
-		author: {},
-		timestamp: {},
-		content: {},
-		children: {},
-		thread: {},
-		n_children: {},
-		n_descendants: {},
+		data: {},
 		depth: {
 			default: 0,
 		},
@@ -99,8 +73,8 @@ export default {
 		};
 	},
 	mounted() {
-		this.height = Math.floor(this.$refs.post.height());
+		this.height = Math.floor((this.$refs.post as any).height());
 	},
-};
+});
 
 </script>

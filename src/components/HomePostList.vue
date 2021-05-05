@@ -2,7 +2,7 @@
 	<div>
 		<post-tree
 			v-for="post in posts" :key="post.id"
-			v-bind="post"
+			:data="post"
 		></post-tree>
 	</div>
 </template>
@@ -13,9 +13,10 @@
 
 <script lang="ts">
 
+import Vue from 'vue';
 import PostTree from './PostTree.vue';
 
-export default {
+export default Vue.extend({
 	props: ['tag'],
 	components: { PostTree },
 	data() {
@@ -29,6 +30,6 @@ export default {
 		const result = await (await fetch(request_url)).json();
 		this.posts = result;
 	},
-}
+});
 
 </script>

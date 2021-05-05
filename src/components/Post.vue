@@ -1,12 +1,12 @@
 <template>
-	<router-link :to="`/post/${id}`">
+	<router-link :to="`/post/${data.id}`">
 		<div
 			ref="bounding_box" :class="main ? 'post sticky main' : sticky ? 'post sticky' : 'post'" v-ripple
 			:style="{ top: stick_top + 'px', zIndex: 10 - depth }"
 		>
-			<div class="post-head">{{author}} · {{timestamp}}</div>
-			<div class="post-body">{{content}}</div>
-			<div v-if="n_children > 0" class="post-footer">답글 {{n_children}} · 대화 {{n_descendants}}</div>
+			<div class="post-head">{{data.author}} · {{data.timestamp}}</div>
+			<div class="post-body">{{data.content}}</div>
+			<div v-if="data.n_children > 0" class="post-footer">답글 {{data.n_children}} · 대화 {{data.n_descendants}}</div>
 		</div>
 	</router-link>
 </template>
@@ -48,14 +48,11 @@
 
 <script lang="ts">
 
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
 	props: {
-		id: {},
-		author: {},
-		timestamp: {},
-		content: {},
-		n_children: {},
-		n_descendants: {},
+		data: {},
 		sticky: {
 			default: true,
 		},
@@ -69,9 +66,9 @@ export default {
 	},
 	methods: {
 		height() {
-			return this.$refs.bounding_box.clientHeight;
+			return (this.$refs.bounding_box as Element).clientHeight;
 		},
 	},
-};
+});
 
 </script>

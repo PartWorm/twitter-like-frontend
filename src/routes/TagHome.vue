@@ -37,9 +37,10 @@
 
 <script lang="ts">
 
+import Vue from "vue";
 import HomePostList from "../components/HomePostList.vue";
 
-export default {
+export default Vue.extend({
 	name: 'tag-home',
 	components: { HomePostList },
 	props: {
@@ -56,6 +57,6 @@ export default {
 		const data = await (await fetch('/api/tags.php')).json();
 		this.tags = data;
 	},
-};
+});
 
 </script>
