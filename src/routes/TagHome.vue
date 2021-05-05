@@ -1,5 +1,5 @@
 <template>
-	<div style="position: relative; height: 100%;">
+	<div>
 		<div style="position: relative;">
 			<v-chip-group style="padding-left: 8px; padding-right: 8px;">
 				<v-chip to="/">#전체</v-chip>
@@ -13,8 +13,8 @@
 			#{{tag.length > 0 ? tag : '전체'}}
 			<div class="border border-bottom"></div>
 		</div>
-		<home-post-list :key="this.$route.path" :tag="tag"></home-post-list>
-		<div style="height: 100%; display: flex; justify-content: center; align-items: start;">
+		<home-post-list :key="tag" :tag="tag"></home-post-list>
+		<div style="height: 1200px; display: flex; justify-content: center; align-items: start;">
 			<img class="blueberry" src="/static/blueberry-mutated.png">
 		</div>
 	</div>

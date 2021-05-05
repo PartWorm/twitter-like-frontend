@@ -1,13 +1,13 @@
 <template>
 	<v-app>
-		<v-main style="position: relative;">
-			<v-container style="max-width: 500px; padding: 0; height: 100%;">
+		<v-main>
+			<v-container style="max-width: 500px; position: relative; padding: 0; height: 100%;">
 				<keep-alive include="tag-home">
 					<router-view></router-view>
 				</keep-alive>
+				<div class="border border-left"></div>
+				<div class="border border-right"></div>
 			</v-container>
-			<div class="border border-left"></div>
-			<div class="border border-right"></div>
 		</v-main>
 	</v-app>
 </template>
@@ -31,6 +31,7 @@ a {
 .border {
 	position: absolute;
 	background: rgba(0, 0, 0, 0.1);
+	z-index: 20;
 }
 
 .border-left {

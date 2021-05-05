@@ -6,13 +6,18 @@
 			:author="ancestor.author"
 			:timestamp="ancestor.timestamp"
 			:content="ancestor.content"
+			:n_children="ancestor.n_children"
+			:n_descendants="ancestor.n_descendants"
 		></post>
 		<post-tree
 			:id="post.id"
 			:author="post.author"
 			:timestamp="post.timestamp"
 			:content="post.content"
+			:n_children="post.n_children"
+			:n_descendants="post.n_descendants"
 			:children="post.children"
+			:main="true"
 		></post-tree>
 		<div style="height: 100%; display: flex; justify-content: center; align-items: start;">
 			<img class="blueberry" src="/static/blueberry-mutated.png">

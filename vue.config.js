@@ -1,5 +1,5 @@
 module.exports = {
-    configureWebpack: {
+	configureWebpack: {
 		devServer: {
 			proxy: {
 				'/api': {
@@ -11,7 +11,7 @@ module.exports = {
 			},
 		},
 	},
-    transpileDependencies: [
-      'vuetify'
-    ]
+	transpileDependencies: [
+		'vuetify',
+	],
 };
