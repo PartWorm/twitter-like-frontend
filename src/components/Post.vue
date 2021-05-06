@@ -4,9 +4,9 @@
 			ref="bounding_box" :class="main ? 'post sticky main' : sticky ? 'post sticky' : 'post'" v-ripple
 			:style="{ top: stick_top + 'px', zIndex: 10 - depth }"
 		>
-			<div class="post-head">{{data.author}} · {{data.timestamp}}</div>
+			<div class="post-meta"><span class="anonymous-name">eafda3d7</span> {{data.timestamp}}</div>
 			<div class="post-body">{{data.content}}</div>
-			<div v-if="data.n_children > 0" class="post-footer">답글 {{data.n_children}} · 대화 {{data.n_descendants}}</div>
+			<div v-if="data.n_children > 0" class="post-meta">답글 {{data.n_children}} · 대화 {{data.n_descendants}}</div>
 		</div>
 	</router-link>
 </template>
@@ -29,10 +29,15 @@
 	background: #e7f5fe;
 }
 
-.post-head, .post-footer {
+.post-meta {
 	font-size: 0.9em;
 	font-weight: 500;
 	color: gray;
+}
+
+.anonymous-name {
+	font-family: 'Roboto Mono', monospace;
+	font-weight: 500;
 }
 
 .post-body {

@@ -1,5 +1,8 @@
 <template>
 	<div v-if="post" style="position: relative; height: 100%;">
+		<v-chip-group v-model="sort_by_i" mandatory style="padding: 0 8px;">
+			<v-chip v-for="sort_by in SortByValues" :key="sort_by.key">{{sort_by.display_name}}</v-chip>
+		</v-chip-group>
 		<post
 			v-for="ancestor in post.ancestors" :key="ancestor.id"
 			:data="ancestor"
@@ -19,18 +22,33 @@
 import Vue from 'vue';
 import Post from '../components/Post.vue';
 import PostTree from '../components/PostTree.vue';
+import { SortBy, SortByValues } from '../sort-by';
 
 export default Vue.extend({
 	props: ['id'],
 	components: { PostTree, Post },
 	data() {
 		return {
+			SortBy,
+			SortByValues,
+			sort_by_i: SortByValues.indexOf(SortBy.Hot),
 			post: undefined as (any | undefined),
 		};
 	},
+	computed: {
+		sort_by(): SortBy {
+			return SortByValues[this.sort_by_i];
+		},
+	},
+	watch: {
+		sort_by() {
+			this.update(this.id);
+		},
+	},
 	methods: {
 		async update(id: string) {
-			const result = await (await fetch(`/api/post.php?id=${id}`)).json();
+			const sort_by = this.sort_by.key;
+			const result = await (await fetch(`/api/post.php?id=${id}&sort-by=${sort_by}`)).json();
 			result.ancestors.reverse();
 			this.post = result;
 		},

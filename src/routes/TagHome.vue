@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div style="position: relative;">
-			<v-chip-group style="padding-left: 8px; padding-right: 8px;">
+			<v-chip-group style="padding: 0 8px;">
 				<v-chip to="/">#전체</v-chip>
 				<v-chip v-for="tag in tags" :key="tag" :to="`/tag/${tag}`">
 					#{{tag}}
@@ -37,8 +37,8 @@
 
 <script lang="ts">
 
-import Vue from "vue";
-import HomePostList from "../components/HomePostList.vue";
+import Vue from 'vue';
+import HomePostList from '../components/HomePostList.vue';
 
 export default Vue.extend({
 	name: 'tag-home',
@@ -51,11 +51,16 @@ export default Vue.extend({
 	data() {
 		return {
 			tags: [],
+			my_name: '',
 		};
 	},
 	async created() {
 		const data = await (await fetch('/api/tags.php')).json();
 		this.tags = data;
+		{
+			const data = await fetch('/api/name.php');
+			this.my_name = await data.text();
+		}
 	},
 });
 
