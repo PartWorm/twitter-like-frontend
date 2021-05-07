@@ -9,12 +9,18 @@
 			</v-chip-group>
 			<div class="border border-bottom"></div>
 		</div>
-		<div class="title" style="position: relative;">
-			#{{tag.length > 0 ? tag : '전체'}}
+		<div class="title">
+			<div>#{{tag.length > 0 ? tag : '전체'}}</div>
+			<div style="flex-grow: 1;"></div>
+			<v-chip-group
+				v-model="sort_by_i"
+			>
+				<v-chip filter v-for="sort_by in SortByValues" :key="sort_by.key">{{sort_by.display_name}}</v-chip>
+			</v-chip-group>
 			<div class="border border-bottom"></div>
 		</div>
 		<home-post-list :key="tag" :tag="tag"></home-post-list>
-		<div style="height: 1200px; display: flex; justify-content: center; align-items: start;">
+		<div style="height: 150px; display: flex; justify-content: center; align-items: start;">
 			<img class="blueberry" src="/static/blueberry-mutated.png">
 		</div>
 	</div>
@@ -23,14 +29,12 @@
 <style>
 
 .title {
-	padding: 8px 12px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+	padding-left: 12px;
 	font-size: 1.5em;
-}
-
-.blueberry {
-	margin-top: 50px;
-	width: 50px;
-	max-width: 100%;
 }
 
 </style>
@@ -39,6 +43,7 @@
 
 import Vue from 'vue';
 import HomePostList from '../components/HomePostList.vue';
+import { SortBy, SortByValues } from '../sort-by';
 
 export default Vue.extend({
 	name: 'tag-home',
@@ -50,6 +55,9 @@ export default Vue.extend({
 	},
 	data() {
 		return {
+			SortBy,
+			SortByValues,
+			sort_by_i: SortByValues.indexOf(SortBy.Hot),
 			tags: [],
 			my_name: '',
 		};

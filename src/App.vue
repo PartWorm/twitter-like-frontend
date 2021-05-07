@@ -55,6 +55,12 @@ a {
 	bottom: 0;
 }
 
+.blueberry {
+	margin-top: 50px;
+	width: 50px;
+	max-width: 100%;
+}
+
 </style>
 
 <script>

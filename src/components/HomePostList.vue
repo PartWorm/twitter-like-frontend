@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<post-tree
+		<post
 			v-for="post in posts" :key="post.id"
 			:data="post"
-		></post-tree>
+		></post>
 	</div>
 </template>
 
@@ -14,11 +14,11 @@
 <script lang="ts">
 
 import Vue from 'vue';
-import PostTree from './PostTree.vue';
+import Post from './Post.vue';
 
 export default Vue.extend({
 	props: ['tag'],
-	components: { PostTree },
+	components: { Post },
 	data() {
 		return {
 			posts: [],

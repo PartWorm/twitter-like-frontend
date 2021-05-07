@@ -1,17 +1,24 @@
 <template>
 	<div v-if="post" style="position: relative; height: 100%;">
-		<v-chip-group v-model="sort_by_i" mandatory style="padding: 0 8px;">
-			<v-chip v-for="sort_by in SortByValues" :key="sort_by.key">{{sort_by.display_name}}</v-chip>
-		</v-chip-group>
 		<post
 			v-for="ancestor in post.ancestors" :key="ancestor.id"
 			:data="ancestor"
+			:sticky="false"
 		></post>
-		<post-tree
+		<post
+			ref="post"
 			:data="post"
 			:main="true"
+		></post>
+		<v-chip-group v-model="sort_by_i" mandatory style="padding: 0 8px;">
+			<v-chip filter v-for="sort_by in SortByValues" :key="sort_by.key">{{sort_by.display_name}}</v-chip>
+		</v-chip-group>
+		<post-tree
+			v-for="child in post.children" :key="child.id"
+			:post="child"
+			:stick_top="height"
 		></post-tree>
-		<div style="height: 100%; display: flex; justify-content: center; align-items: start;">
+		<div style="height: 150px; display: flex; justify-content: center; align-items: start;">
 			<img class="blueberry" src="/static/blueberry-mutated.png">
 		</div>
 	</div>
@@ -33,6 +40,7 @@ export default Vue.extend({
 			SortByValues,
 			sort_by_i: SortByValues.indexOf(SortBy.Hot),
 			post: undefined as (any | undefined),
+			height: 0,
 		};
 	},
 	computed: {
@@ -51,6 +59,9 @@ export default Vue.extend({
 			const result = await (await fetch(`/api/post.php?id=${id}&sort-by=${sort_by}`)).json();
 			result.ancestors.reverse();
 			this.post = result;
+			this.$nextTick(() => {
+				this.height = Math.floor((this.$refs.post as any).height());
+			});
 		},
 	},
 	created() {
