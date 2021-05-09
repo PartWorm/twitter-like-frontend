@@ -1,7 +1,7 @@
 <template>
 	<router-link :to="`/post/${data.id}`">
 		<div
-			:class="claSs" v-ripple :style="style"
+			ref="full_box" :class="claSs" v-ripple :style="style"
 		>
 			<div style="opacity: 0;">
 				<div class="meta header">
@@ -18,9 +18,9 @@
 					</div>
 				</div>
 			</div>
-			<div ref="box" class="collapsed-form">
-				<span class="anonymous-name" :style="{ color: name_color }">{{name.slice(0, 2)}}</span>
-				<span class="body">{{data.content}}</span>
+			<div ref="collapsed_box" class="collapsed-form">
+				<span class="anonymous-name" :style="{ color: name_color }">{{name.slice(0, 2)}}⋯</span>
+				<span class="body collapsed-body">{{data.content}}</span>
 			</div>
 		</div>
 	</router-link>
@@ -41,7 +41,6 @@
 }
 
 .main {
-	font-size: 1.1em;
 	border: 2px gold solid;
 	border-radius: 4px;
 }
@@ -85,10 +84,19 @@
 
 .collapsed-form {
 	position: absolute;
+	width: 100%;
+	left: 0;
 	bottom: 0;
 	display: flex;
 	align-items: baseline;
 	flex-direction: row;
+	padding: inherit;
+}
+
+.collapsed-body {
+	margin-left: 8px;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 </style>
@@ -116,6 +124,7 @@ export default Vue.extend({
 	data() {
 		return {
 			name: Math.floor(Math.random() * (1 << 24)).toString(16).padStart(6, '0'),
+			height_diff: 0,
 		};
 	},
 	computed: {
@@ -123,7 +132,7 @@ export default Vue.extend({
 			return this.main ? 'post sticky main' : this.sticky ? 'post sticky' : 'post';
 		},
 		style(): Record<string, unknown> {
-			return this.main || this.sticky ? { top: this.stick_top + 'px', zIndex: this.main ? 11 : 10 - this.depth } : {};
+			return this.main || this.sticky ? { top: this.stick_top - this.height_diff + 'px', zIndex: this.main ? 11 : 10 - this.depth } : {};
 		},
 		name_color(): string {
 			const name = this.name;
@@ -145,9 +154,13 @@ export default Vue.extend({
 			return `hsl(${Math.floor(hue * 360)}, ${Math.floor(sat * 100)}%, 40%)`;
 		},
 	},
+	mounted() {
+		const { collapsed_box, full_box } = this.$refs;
+		this.height_diff = Math.ceil((full_box as Element).clientHeight - (collapsed_box as Element).clientHeight);
+	},
 	methods: {
 		height() {
-			return (this.$refs.box as Element).clientHeight;
+			return (this.$refs.collapsed_box as Element).clientHeight;
 		},
 	},
 });
