@@ -9,6 +9,7 @@
 			ref="post"
 			:data="post"
 			:main="true"
+			:sticky="true"
 		></post>
 		<v-chip-group v-model="sort_by_i" mandatory style="padding: 0 8px;">
 			<v-chip filter v-for="sort_by in SortByValues" :key="sort_by.key">{{sort_by.display_name}}</v-chip>

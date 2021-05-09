@@ -3,25 +3,28 @@
 		<div
 			ref="full_box" :class="claSs" v-ripple :style="style"
 		>
-			<div style="opacity: 0;">
-				<div class="meta header">
-					<span class="anonymous-name" :style="{ color: name_color }">{{name}}</span>
-					<span class="header-entry"> · {{data.timestamp}}</span>
+			<div style="flex-grow: 1;">
+				<div :style="{ opacity: `${collapsed ? 0 : 100}%` }">
+					<div class="meta header">
+						<span class="anonymous-name" :style="{ color: name_color }">{{name}}</span>
+						<span class="header-entry"> · {{data.timestamp}}</span>
+					</div>
+					<div class="body">{{data.content}}</div>
+					<div v-if="data.n_children > 0" class="meta footer">
+						<div class="footer-entry">
+							<img class="footer-icon" src="@/assets/chat_black_24dp.svg">{{data.n_descendants}}
+						</div>
+						<div class="footer-entry">
+							<img class="footer-icon" src="@/assets/reply_black_24dp.svg">{{data.n_children}}
+						</div>
+					</div>
 				</div>
-				<div class="body">{{data.content}}</div>
-				<div v-if="data.n_children > 0" class="meta footer">
-					<div class="footer-entry">
-						<img class="footer-icon" src="@/assets/chat_black_24dp.svg">{{data.n_descendants}}
-					</div>
-					<div class="footer-entry">
-						<img class="footer-icon" src="@/assets/reply_black_24dp.svg">{{data.n_children}}
-					</div>
+				<div :style="{ opacity: `${collapsed ? 100 : 0}%` }" ref="collapsed_box" class="collapsed-form">
+					<span class="anonymous-name" :style="{ color: name_color }">{{name.slice(0, 2)}}⋯</span>
+					<span class="body collapsed-body">{{data.content}}</span>
 				</div>
 			</div>
-			<div ref="collapsed_box" class="collapsed-form">
-				<span class="anonymous-name" :style="{ color: name_color }">{{name.slice(0, 2)}}⋯</span>
-				<span class="body collapsed-body">{{data.content}}</span>
-			</div>
+			<v-btn style="align-self: flex-end;" icon><img class="reply-button" src="@/assets/reply_black_24dp.svg"></v-btn>
 		</div>
 	</router-link>
 </template>
@@ -31,7 +34,7 @@
 .post {
 	position: relative;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	padding: 8px 12px;
 	background: white;
 }
@@ -64,6 +67,7 @@
 .footer-entry {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	margin-right: 8px;
 }
 
@@ -73,12 +77,18 @@
 	filter: invert(52%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(96%) contrast(95%);
 }
 
+.reply-button {
+	filter: invert(52%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(96%) contrast(95%);
+}
+
 .anonymous-name {
 	font-family: 'Roboto Mono', monospace;
 	font-weight: 500;
 }
 
 .body {
+	margin-bottom: 2px;
+	line-height: normal;
 	color: black;
 }
 
@@ -105,11 +115,13 @@
 
 import Vue from 'vue';
 
+import { color_from_name } from '../color_from_name';
+
 export default Vue.extend({
 	props: {
 		data: {},
 		sticky: {
-			default: true,
+			default: false,
 		},
 		depth: {
 			default: 0,
@@ -125,6 +137,7 @@ export default Vue.extend({
 		return {
 			name: Math.floor(Math.random() * (1 << 24)).toString(16).padStart(6, '0'),
 			height_diff: 0,
+			collapsed: false,
 		};
 	},
 	computed: {
@@ -132,26 +145,10 @@ export default Vue.extend({
 			return this.main ? 'post sticky main' : this.sticky ? 'post sticky' : 'post';
 		},
 		style(): Record<string, unknown> {
-			return this.main || this.sticky ? { top: this.stick_top - this.height_diff + 'px', zIndex: this.main ? 11 : 10 - this.depth } : {};
+			return this.sticky ? { top: this.stick_top - this.height_diff + 'px', zIndex: this.main ? 11 : 10 - this.depth } : {};
 		},
 		name_color(): string {
-			const name = this.name;
-			const x = parseInt(name.slice(0, 3), 16) / 0x1000;
-			const y = parseInt(name.slice(3, 6), 16) / 0x1000;
-			let hue, sat;
-			if (y < x && y != 0) {
-				hue = x / y / 2;
-				sat = y;
-			}
-			else if (y >= x && y != 1) {
-				hue = x / (1 - y) / 2 + 0.5;
-				sat = 1 - y;
-			}
-			else {
-				hue = sat = 0;
-			}
-			sat = Math.pow(sat, 1 / 2.2);
-			return `hsl(${Math.floor(hue * 360)}, ${Math.floor(sat * 100)}%, 40%)`;
+			return color_from_name(this.name);
 		},
 	},
 	mounted() {

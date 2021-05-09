@@ -5,6 +5,7 @@
 			:data="post"
 			:depth="depth"
 			:stick_top="stick_top"
+			:sticky="sticky"
 		></post>
 		<div v-if="has_children || has_thread" class="shadow" :style="{ zIndex: 10 - depth, top: stick_top + height + 'px' }"></div>
 		<div v-if="has_children" style="display: flex; flex-direction: row;">
@@ -35,7 +36,7 @@
 <style>
 
 .indent-line {
-	flex-grow: 0;
+	flex-shrink: 0;
 	width: 4px;
 	margin: 4px 4px 4px 12px;
 	background: rgba(0, 0, 0, 0.1);
@@ -74,11 +75,14 @@ export default Vue.extend({
 		},
 	},
 	computed: {
-		has_children(): number | undefined {
+		has_children(): boolean {
 			return (this as any).post.children?.length;
 		},
-		has_thread(): number | undefined {
+		has_thread(): boolean {
 			return (this as any).post.thread?.length;
+		},
+		sticky(): boolean {
+			return this.has_children || this.has_thread;
 		},
 	},
 	data() {
