@@ -44,6 +44,7 @@
 import Vue from 'vue';
 import HomePostList from '../components/HomePostList.vue';
 import { SortBy, SortByValues } from '../sort-by';
+import { api_name, api_tags } from '../api_endpoints';
 
 export default Vue.extend({
 	name: 'tag-home',
@@ -63,10 +64,10 @@ export default Vue.extend({
 		};
 	},
 	async created() {
-		const data = await (await fetch('/api/tags.php')).json();
+		const data = await (await fetch(api_tags)).json();
 		this.tags = data;
 		{
-			const data = await fetch('/api/name.php');
+			const data = await fetch(api_name);
 			this.my_name = await data.text();
 		}
 	},

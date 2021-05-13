@@ -10,21 +10,23 @@
 						<span class="header-entry"> · {{data.timestamp}}</span>
 					</div>
 					<div class="body">{{data.content}}</div>
-					<div v-if="data.n_children > 0" class="meta footer">
-						<div class="footer-entry">
+					<div class="meta footer">
+						<div v-if="data.n_children > 0" class="footer-entry">
 							<img class="footer-icon" src="@/assets/chat_black_24dp.svg">{{data.n_descendants}}
 						</div>
-						<div class="footer-entry">
-							<img class="footer-icon" src="@/assets/reply_black_24dp.svg">{{data.n_children}}
+						<div class="footer-entry reply">
+							<img class="footer-icon" src="@/assets/reply_black_24dp.svg">{{data.n_children || '답글'}}
 						</div>
 					</div>
 				</div>
-				<div :style="{ opacity: `${collapsed ? 100 : 0}%` }" ref="collapsed_box" class="collapsed-form">
+				<div
+					@click="alert('글 쓰기')"
+					:style="{ opacity: `${collapsed ? 100 : 0}%`, pointerEvents: collapsed ? undefined : 'none' }" ref="collapsed_box" class="collapsed-form"
+				>
 					<span class="anonymous-name" :style="{ color: name_color }">{{name.slice(0, 2)}}⋯</span>
 					<span class="body collapsed-body">{{data.content}}</span>
 				</div>
 			</div>
-			<v-btn style="align-self: flex-end;" icon><img class="reply-button" src="@/assets/reply_black_24dp.svg"></v-btn>
 		</div>
 	</router-link>
 </template>
@@ -77,8 +79,9 @@
 	filter: invert(52%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(96%) contrast(95%);
 }
 
-.reply-button {
-	filter: invert(52%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(96%) contrast(95%);
+.reply {
+	margin: -8px 0;
+	padding: 8px 0;
 }
 
 .anonymous-name {
@@ -153,11 +156,12 @@ export default Vue.extend({
 	},
 	mounted() {
 		const { collapsed_box, full_box } = this.$refs;
-		this.height_diff = Math.ceil((full_box as Element).clientHeight - (collapsed_box as Element).clientHeight);
+		this.height_diff = 0;
+		// this.height_diff = Math.ceil((full_box as Element).clientHeight - (collapsed_box as Element).clientHeight);
 	},
 	methods: {
 		height() {
-			return (this.$refs.collapsed_box as Element).clientHeight;
+			return (this.$refs.full_box as Element).clientHeight;
 		},
 	},
 });

@@ -31,6 +31,7 @@ import Vue from 'vue';
 import Post from '../components/Post.vue';
 import PostTree from '../components/PostTree.vue';
 import { SortBy, SortByValues } from '../sort-by';
+import { api_post } from '../api_endpoints';
 
 export default Vue.extend({
 	props: ['id'],
@@ -57,7 +58,7 @@ export default Vue.extend({
 	methods: {
 		async update(id: string) {
 			const sort_by = this.sort_by.key;
-			const result = await (await fetch(`/api/post.php?id=${id}&sort-by=${sort_by}`)).json();
+			const result = await (await fetch(api_post(id, sort_by))).json();
 			result.ancestors.reverse();
 			this.post = result;
 			this.$nextTick(() => {

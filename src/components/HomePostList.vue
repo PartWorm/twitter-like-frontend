@@ -14,6 +14,7 @@
 <script lang="ts">
 
 import Vue from 'vue';
+import { api_home_posts, api_home_posts_with_tag } from '../api_endpoints';
 import Post from './Post.vue';
 
 export default Vue.extend({
@@ -26,7 +27,7 @@ export default Vue.extend({
 	},
 	async created() {
 		const { tag } = this;
-		const request_url = tag.length > 0 ? `/api/home-posts.php?tag=${tag}` : '/api/home-posts.php';
+		const request_url = tag.length > 0 ? api_home_posts_with_tag(tag) : api_home_posts;
 		const result = await (await fetch(request_url)).json();
 		this.posts = result;
 	},

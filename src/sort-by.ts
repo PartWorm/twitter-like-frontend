@@ -9,6 +9,6 @@ export type SortBy = {
 export const SortBy = {
 	Hot: make_sort_by('인기', 'hot'),
 	New: make_sort_by('최신', 'new'),
-	Old: make_sort_by('오래된', 'old'),
+	Old: make_sort_by('과거', 'old'),
 };
 export const SortByValues = Object.values(SortBy);
