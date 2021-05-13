@@ -1,24 +1,3 @@
-# twitter-like-3
+# twitter-like-frontend
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![twitter-like-frontend](https://user-images.githubusercontent.com/53550155/118135511-18160380-b43e-11eb-8ed3-cb19428e696f.png)
